@@ -31,5 +31,5 @@ export default ProductOverviewScreen;
 const styles = StyleSheet.create({});
 
 export const screenOptions = {
-  title: "Prodct Overview",
+  title: "Product Overview",
 };
