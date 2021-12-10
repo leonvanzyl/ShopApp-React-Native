@@ -18,7 +18,12 @@ const ProductOverviewScreen = (props) => {
           title={itemData.item.title}
           image={itemData.item.imageUrl}
           price={itemData.item.price}
-          onViewDetail={() => {}}
+          onViewDetail={() => {
+            props.navigation.navigate("ProductDetail", {
+              productId: itemData.item.id,
+              productTitle: itemData.item.title,
+            });
+          }}
           onAddToCart={() => {}}
         />
       )}
@@ -30,6 +35,6 @@ export default ProductOverviewScreen;
 
 const styles = StyleSheet.create({});
 
-export const screenOptions = {
+export const productOverviewScreenOptions = {
   title: "Product Overview",
 };

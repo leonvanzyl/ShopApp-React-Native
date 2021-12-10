@@ -3,8 +3,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Colors from "../constants/Colors";
 
 import ProductOverviewScreen, {
-  screenOptions,
+  productOverviewScreenOptions,
 } from "../screens/shop/ProductOverviewScreen";
+import ProductDetailScreen, {
+  productDetailScreenOptions,
+} from "../screens/shop/ProductDetailScreen";
 
 const ProductStack = createStackNavigator();
 
@@ -19,7 +22,12 @@ export function ShopNavigator() {
       <ProductStack.Screen
         name="ProductOverview"
         component={ProductOverviewScreen}
-        options={screenOptions}
+        options={productOverviewScreenOptions}
+      />
+      <ProductStack.Screen
+        name="ProductDetail"
+        component={ProductDetailScreen}
+        options={productDetailScreenOptions}
       />
     </ProductStack.Navigator>
   );
