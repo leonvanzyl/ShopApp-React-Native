@@ -17,6 +17,8 @@ export function ShopNavigator() {
       screenOptions={{
         headerStyle: { backgroundColor: Colors.primary },
         headerTintColor: "white",
+        headerTitleStyle: { fontFamily: "open-sans-bold" },
+        headerBackTitleStyle: { fontFamily: "open-sans" },
       }}
     >
       <ProductStack.Screen
