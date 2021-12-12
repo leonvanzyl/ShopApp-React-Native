@@ -8,6 +8,7 @@ import ProductOverviewScreen, {
 import ProductDetailScreen, {
   productDetailScreenOptions,
 } from "../screens/shop/ProductDetailScreen";
+import CartScreen, { cartScreenOptions } from "../screens/shop/CartScreen";
 
 const ProductStack = createStackNavigator();
 
@@ -30,6 +31,11 @@ export function ShopNavigator() {
         name="ProductDetail"
         component={ProductDetailScreen}
         options={productDetailScreenOptions}
+      />
+      <ProductStack.Screen
+        name="Cart"
+        component={CartScreen}
+        options={cartScreenOptions}
       />
     </ProductStack.Navigator>
   );
