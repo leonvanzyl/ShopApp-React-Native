@@ -20,9 +20,16 @@ import CartScreen, { cartScreenOptions } from "../screens/shop/CartScreen";
 import OrdersScreen, {
   ordersScreenOptions,
 } from "../screens/shop/OrdersScreen";
+import UserProductsScreen, {
+  userProductsScreenOptions,
+} from "../screens/user/UserProductsScreen";
+import EditProductScreen, {
+  editProductScreenOptions,
+} from "../screens/user/EditProductScreen";
 
 const OrdersStack = createStackNavigator();
 const ProductStack = createStackNavigator();
+const UserProductsStack = createStackNavigator();
 const MainDrawer = createDrawerNavigator();
 
 // Default screenOptions
@@ -43,6 +50,23 @@ function OrdersNavigator() {
         options={ordersScreenOptions}
       />
     </OrdersStack.Navigator>
+  );
+}
+
+function UserProductsNavigator() {
+  return (
+    <UserProductsStack.Navigator screenOptions={defaultScreenOptions}>
+      <UserProductsStack.Screen
+        name="UserProducts"
+        component={UserProductsScreen}
+        options={userProductsScreenOptions}
+      />
+      <UserProductsStack.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        options={editProductScreenOptions}
+      />
+    </UserProductsStack.Navigator>
   );
 }
 
@@ -102,6 +126,20 @@ function MainDrawerNavigator() {
           drawerIcon: (drawerConfig) => (
             <Ionicons
               name={Platform.OS === "android" ? "md-cart" : "ios-cart"}
+              size={23}
+              color={drawerConfig.color}
+            />
+          ),
+        }}
+      />
+      <MainDrawer.Screen
+        name="Admin"
+        component={UserProductsNavigator}
+        options={{
+          title: "Admin",
+          drawerIcon: (drawerConfig) => (
+            <Ionicons
+              name={Platform.OS === "android" ? "md-create" : "ios-create"}
               size={23}
               color={drawerConfig.color}
             />

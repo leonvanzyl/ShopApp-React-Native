@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 const EditProductScreen = () => {
   return (
     <View>
-      <Text></Text>
+      <Text>Edit Product Screen</Text>
     </View>
   );
 };
@@ -12,3 +12,7 @@ const EditProductScreen = () => {
 export default EditProductScreen;
 
 const styles = StyleSheet.create({});
+
+export const editProductScreenOptions = {
+  title: "Edit Product",
+};
