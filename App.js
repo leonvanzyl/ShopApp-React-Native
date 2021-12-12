@@ -11,10 +11,12 @@ import * as Font from "expo-font";
 // REDUX
 import productReducer from "./store/reducers/products";
 import cartReducer from "./store/reducers/cart";
+import orderReducer from "./store/reducers/orders";
 
 const rootReducer = combineReducers({
   products: productReducer,
   cart: cartReducer,
+  orders: orderReducer,
 });
 
 const store = createStore(rootReducer);

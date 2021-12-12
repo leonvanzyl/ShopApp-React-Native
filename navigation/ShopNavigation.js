@@ -1,7 +1,15 @@
 import React from "react";
+import { Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+
+// Navigators
 import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+
+// Constants
 import Colors from "../constants/Colors";
 
+// Custom Screens and Components
 import ProductOverviewScreen, {
   productOverviewScreenOptions,
 } from "../screens/shop/ProductOverviewScreen";
@@ -9,19 +17,39 @@ import ProductDetailScreen, {
   productDetailScreenOptions,
 } from "../screens/shop/ProductDetailScreen";
 import CartScreen, { cartScreenOptions } from "../screens/shop/CartScreen";
+import OrdersScreen, {
+  ordersScreenOptions,
+} from "../screens/shop/OrdersScreen";
 
+const OrdersStack = createStackNavigator();
 const ProductStack = createStackNavigator();
+const MainDrawer = createDrawerNavigator();
 
-export function ShopNavigator() {
+// Default screenOptions
+const defaultScreenOptions = {
+  headerStyle: { backgroundColor: Colors.primary },
+  headerTintColor: "white",
+  headerTitleStyle: { fontFamily: "open-sans-bold" },
+  headerBackTitleStyle: { fontFamily: "open-sans" },
+};
+
+// Orders Stack Navigator
+function OrdersNavigator() {
   return (
-    <ProductStack.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: Colors.primary },
-        headerTintColor: "white",
-        headerTitleStyle: { fontFamily: "open-sans-bold" },
-        headerBackTitleStyle: { fontFamily: "open-sans" },
-      }}
-    >
+    <OrdersStack.Navigator screenOptions={defaultScreenOptions}>
+      <OrdersStack.Screen
+        name="Orders"
+        component={OrdersScreen}
+        options={ordersScreenOptions}
+      />
+    </OrdersStack.Navigator>
+  );
+}
+
+// Product Stack Navigator
+function ProductNavigator() {
+  return (
+    <ProductStack.Navigator screenOptions={defaultScreenOptions}>
       <ProductStack.Screen
         name="ProductOverview"
         component={ProductOverviewScreen}
@@ -40,3 +68,79 @@ export function ShopNavigator() {
     </ProductStack.Navigator>
   );
 }
+
+// Main Drawer Navigator
+function MainDrawerNavigator() {
+  return (
+    <MainDrawer.Navigator
+      screenOptions={{
+        headerShown: false,
+        drawerActiveTintColor: Colors.primary,
+      }}
+    >
+      <MainDrawer.Screen
+        name="ProductsDrawer"
+        component={ProductNavigator}
+        options={{
+          title: "Products",
+          drawerIcon: (drawerConfig) => {
+            return (
+              <Ionicons
+                name={Platform.OS === "android" ? "md-list" : "ios-list"}
+                size={23}
+                color={drawerConfig.color}
+              />
+            );
+          },
+        }}
+      />
+      <MainDrawer.Screen
+        name="OrdersDrawer"
+        component={OrdersNavigator}
+        options={{
+          title: "Your Orders",
+          drawerIcon: (drawerConfig) => (
+            <Ionicons
+              name={Platform.OS === "android" ? "md-cart" : "ios-cart"}
+              size={23}
+              color={drawerConfig.color}
+            />
+          ),
+        }}
+      />
+    </MainDrawer.Navigator>
+  );
+}
+
+export function ShopNavigator() {
+  return <MainDrawerNavigator />;
+}
+
+// export function ShopNavigator() {
+//   return (
+//     <ProductStack.Navigator
+//       screenOptions={{
+//         headerStyle: { backgroundColor: Colors.primary },
+//         headerTintColor: "white",
+//         headerTitleStyle: { fontFamily: "open-sans-bold" },
+//         headerBackTitleStyle: { fontFamily: "open-sans" },
+//       }}
+//     >
+//       <ProductStack.Screen
+//         name="ProductOverview"
+//         component={ProductOverviewScreen}
+//         options={productOverviewScreenOptions}
+//       />
+//       <ProductStack.Screen
+//         name="ProductDetail"
+//         component={ProductDetailScreen}
+//         options={productDetailScreenOptions}
+//       />
+//       <ProductStack.Screen
+//         name="Cart"
+//         component={CartScreen}
+//         options={cartScreenOptions}
+//       />
+//     </ProductStack.Navigator>
+//   );
+// }

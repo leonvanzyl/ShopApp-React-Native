@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, FlatList, Platform } from "react-native";
+import { StyleSheet, FlatList, Platform } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 // Custom Components
@@ -44,6 +44,19 @@ const styles = StyleSheet.create({});
 export const productOverviewScreenOptions = (itemData) => {
   return {
     title: "Product Overview",
+    headerLeft: () => {
+      return (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title="Menu"
+            iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+            onPress={() => {
+              itemData.navigation.toggleDrawer();
+            }}
+          />
+        </HeaderButtons>
+      );
+    },
     headerRight: () => {
       return (
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>

@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, FlatList, Button } from "react-native";
 // REDUX
 import { useSelector, useDispatch } from "react-redux";
 import * as cartActions from "../../store/actions/cart";
+import * as ordersActions from "../../store/actions/orders";
 
 // Custom Components
 import Colors from "../../constants/Colors";
@@ -40,6 +41,9 @@ const CartScreen = (props) => {
           color={Colors.accent}
           title="Order Now"
           disabled={cartItems.length === 0}
+          onPress={() => {
+            dispatch(ordersActions.addOrder(cartItems, cartTotalAmount));
+          }}
         />
       </View>
       <View>
@@ -52,6 +56,7 @@ const CartScreen = (props) => {
                 quantity={itemData.item.quantity}
                 title={itemData.item.productTitle}
                 amount={itemData.item.sum.toFixed(2)}
+                deletable={true}
                 onRemove={() => {
                   dispatch(cartActions.removeFromCart(itemData.item.productId));
                 }}
@@ -93,5 +98,5 @@ const styles = StyleSheet.create({
 });
 
 export const cartScreenOptions = {
-  title: "Cart",
+  title: "Your Cart",
 };
