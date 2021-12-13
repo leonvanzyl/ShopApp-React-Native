@@ -1,7 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import ReduxThunk from "redux-thunk";
 import { Provider, useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { ShopNavigator } from "./navigation/ShopNavigation";
@@ -19,7 +20,7 @@ const rootReducer = combineReducers({
   orders: orderReducer,
 });
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 const fetchFonts = () => {
   return Font.loadAsync({

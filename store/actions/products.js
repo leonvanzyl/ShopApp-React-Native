@@ -1,15 +1,68 @@
+import Product from "../../models/product";
+
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
 export const ADD_PRODUCT = "ADD_PRODUCT";
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
+export const SET_PRODUCTS = "SET_PRODUCTS";
+
+export const fetchProduct = () => {
+  return async (dispatch) => {
+    const response = await fetch(
+      "https://rn-complete-guide-474ec-default-rtdb.firebaseio.com/products.json"
+    );
+
+    const resData = await response.json();
+    const loadedProducts = [];
+
+    for (const key in resData) {
+      loadedProducts.push(
+        new Product(
+          key,
+          "u1",
+          resData[key].title,
+          resData[key].imageUrl,
+          resData[key].description,
+          resData[key].price
+        )
+      );
+    }
+
+    console.log(loadedProducts);
+
+    dispatch({ type: SET_PRODUCTS, products: loadedProducts });
+  };
+};
 
 export const deleteProduct = (productId) => {
   return { type: DELETE_PRODUCT, pid: productId };
 };
 
 export const addProduct = (title, description, imageUrl, price) => {
-  return {
-    type: ADD_PRODUCT,
-    productData: { title, description, imageUrl, price },
+  return async (dispatch) => {
+    // Execute any async code, like a fetch
+
+    const response = await fetch(
+      "https://rn-complete-guide-474ec-default-rtdb.firebaseio.com/products.json",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          imageUrl,
+          price,
+        }),
+      }
+    );
+
+    const resData = await response.json();
+
+    dispatch({
+      type: ADD_PRODUCT,
+      productData: { id: resData.name, title, description, imageUrl, price },
+    });
   };
 };
 

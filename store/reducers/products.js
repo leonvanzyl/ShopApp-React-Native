@@ -25,7 +25,7 @@ export default (state = initialState, action) => {
       };
     case ADD_PRODUCT:
       const newProduct = new Product(
-        new Date().toString(),
+        action.productData.id,
         "u1",
         action.productData.title,
         action.productData.imageUrl,
