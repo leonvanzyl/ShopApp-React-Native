@@ -1,5 +1,13 @@
-import React, { useEffect } from "react";
-import { StyleSheet, FlatList, Platform, Button } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  StyleSheet,
+  FlatList,
+  Platform,
+  Button,
+  ActivityIndicator,
+  Text,
+  View,
+} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 // Custom Components
@@ -13,6 +21,10 @@ import * as cartActions from "../../store/actions/cart";
 import * as productsActions from "../../store/actions/products";
 
 const ProductOverviewScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState();
+
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
 
@@ -23,12 +35,72 @@ const ProductOverviewScreen = (props) => {
     });
   };
 
+  const loadProducts = useCallback(async () => {
+    setError(null);
+    setIsRefreshing(true);
+    try {
+      await dispatch(productsActions.fetchProduct());
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsRefreshing(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  // Add listener for refreshing the data - ie. on navigation changes
   useEffect(() => {
-    dispatch(productsActions.fetchProduct());
-  }, [dispatch]);
+    const willFocusSub = props.navigation.addListener("focus", loadProducts);
+
+    // Clean up the listener
+    return willFocusSub;
+    // return () => {
+    //   if (willFocusSub) {
+    //     console.log(willFocusSub);
+    //     willFocusSub.remove();
+    //   }
+    // };
+  }, [loadProducts]);
+
+  // Fetch initial data
+  useEffect(() => {
+    setIsLoading(true);
+    loadProducts().then(() => setIsLoading(false));
+  }, [dispatch, loadProducts, setIsLoading]);
+
+  // Display error
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>An error occured</Text>
+        <Button
+          title="Try again"
+          onPress={loadProducts}
+          color={Colors.primary}
+        />
+      </View>
+    );
+  }
+  // Loading Spinner while data is being fetched
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
+  // Loading is done, but no data exists
+  if (!isLoading && products.length === 0) {
+    return (
+      <View style={styles.centered}>
+        <Text>No products found. Maybe start adding some. </Text>
+      </View>
+    );
+  }
 
   return (
     <FlatList
+      onRefresh={loadProducts}
+      refreshing={isRefreshing}
       data={products}
       keyExtractor={(item) => item.id}
       renderItem={(itemData) => (
@@ -60,7 +132,13 @@ const ProductOverviewScreen = (props) => {
 
 export default ProductOverviewScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 
 export const productOverviewScreenOptions = (itemData) => {
   return {
