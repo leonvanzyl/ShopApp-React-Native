@@ -26,10 +26,12 @@ import UserProductsScreen, {
 import EditProductScreen, {
   editProductScreenOptions,
 } from "../screens/user/EditProductScreen";
+import AuthScreen, { authScreenOptions } from "../screens/user/AuthScreen";
 
 const OrdersStack = createStackNavigator();
 const ProductStack = createStackNavigator();
 const UserProductsStack = createStackNavigator();
+const AuthStack = createStackNavigator();
 const MainDrawer = createDrawerNavigator();
 
 // Default screenOptions
@@ -53,6 +55,20 @@ function OrdersNavigator() {
   );
 }
 
+// Auth Navigator
+function AuthNavigator() {
+  return (
+    <AuthStack.Navigator screenOptions={defaultScreenOptions}>
+      <AuthStack.Screen
+        name="Auth"
+        component={AuthScreen}
+        options={authScreenOptions}
+      />
+    </AuthStack.Navigator>
+  );
+}
+
+// User Stack Navigator
 function UserProductsNavigator() {
   return (
     <UserProductsStack.Navigator screenOptions={defaultScreenOptions}>
@@ -151,7 +167,8 @@ function MainDrawerNavigator() {
 }
 
 export function ShopNavigator() {
-  return <MainDrawerNavigator />;
+  // return <MainDrawerNavigator />;
+  return <AuthNavigator />;
 }
 
 // export function ShopNavigator() {
