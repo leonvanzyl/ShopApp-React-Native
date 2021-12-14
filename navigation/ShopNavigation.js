@@ -166,10 +166,21 @@ function MainDrawerNavigator() {
   );
 }
 
+const ShopStackNavigator = createStackNavigator();
+
 export function ShopNavigator() {
-  // return <MainDrawerNavigator />;
-  return <AuthNavigator />;
+  return (
+    <ShopStackNavigator.Navigator screenOptions={{ headerShown: false }}>
+      <ShopStackNavigator.Screen name="auth" component={AuthNavigator} />
+      <ShopStackNavigator.Screen name="shop" component={MainDrawerNavigator} />
+    </ShopStackNavigator.Navigator>
+  );
 }
+
+// export function ShopNavigator() {
+//   // return <MainDrawerNavigator />;
+//   return <AuthNavigator />;
+// }
 
 // export function ShopNavigator() {
 //   return (

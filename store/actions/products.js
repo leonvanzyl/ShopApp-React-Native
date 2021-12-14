@@ -41,9 +41,10 @@ export const fetchProduct = () => {
 };
 
 export const deleteProduct = (productId) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://rn-complete-guide-474ec-default-rtdb.firebaseio.com/products/${productId}.json`,
+      `https://rn-complete-guide-474ec-default-rtdb.firebaseio.com/products/${productId}.json?auth=${token}`,
       {
         method: "DELETE",
       }
@@ -58,11 +59,12 @@ export const deleteProduct = (productId) => {
 };
 
 export const addProduct = (title, description, imageUrl, price) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     // Execute any async code, like a fetch
-
+    const token = getState().auth.token;
+    const userId = getState().auth.userId;
     const response = await fetch(
-      "https://rn-complete-guide-474ec-default-rtdb.firebaseio.com/products.json",
+      `https://rn-complete-guide-474ec-default-rtdb.firebaseio.com/products.json?auth=${token}`,
       {
         method: "POST",
         headers: {
@@ -73,6 +75,7 @@ export const addProduct = (title, description, imageUrl, price) => {
           description,
           imageUrl,
           price,
+          ownerId: userId,
         }),
       }
     );
@@ -81,15 +84,23 @@ export const addProduct = (title, description, imageUrl, price) => {
 
     dispatch({
       type: ADD_PRODUCT,
-      productData: { id: resData.name, title, description, imageUrl, price },
+      productData: {
+        id: resData.name,
+        title,
+        description,
+        imageUrl,
+        price,
+        ownerId: userId,
+      },
     });
   };
 };
 
 export const updateProduct = (id, title, description, imageUrl) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://rn-complete-guide-474ec-default-rtdb.firebaseio.com/products/${id}.json`,
+      `https://rn-complete-guide-474ec-default-rtdb.firebaseio.com/products/${id}.json?auth=${token}`,
       {
         method: "PATCH",
         headers: {
