@@ -126,7 +126,20 @@ const EditProductScreen = (props) => {
   // useEffect is used to add the form submit handler function to the navigation PARAMS, in order
   // for the Save button in our header to have access to this function
   useEffect(() => {
-    props.navigation.setParams({ submit: submitHandler });
+    // props.navigation.setParams({ submit: submitHandler });
+    props.navigation.setOptions({
+      headerRight: () => {
+        return (
+          <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+            <Item
+              title="Save"
+              iconName={Platform.OS === "android" ? "md-save" : "ios-save"}
+              onPress={submitHandler}
+            />
+          </HeaderButtons>
+        );
+      },
+    });
   }, [submitHandler]);
 
   // Input Validation & State
@@ -234,19 +247,8 @@ const styles = StyleSheet.create({
 });
 
 export const editProductScreenOptions = (navData) => {
-  const submitFn = navData.route.params?.submit;
+  // const submitFn = navData.route.params?.submit;
   return {
     title: navData.route.params?.productId ? "Edit Product" : "Add Product",
-    headerRight: () => {
-      return (
-        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-          <Item
-            title="Save"
-            iconName={Platform.OS === "android" ? "md-save" : "ios-save"}
-            onPress={submitFn}
-          />
-        </HeaderButtons>
-      );
-    },
   };
 };
