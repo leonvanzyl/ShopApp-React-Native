@@ -33,8 +33,6 @@ export const fetchProduct = () => {
         );
       }
 
-      console.log(userId);
-
       dispatch({
         type: SET_PRODUCTS,
         products: loadedProducts,

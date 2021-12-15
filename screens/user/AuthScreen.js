@@ -96,7 +96,6 @@ const AuthScreen = (props) => {
     setError(null);
     try {
       await dispatch(action);
-      props.navigation.replace("shop");
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
@@ -195,5 +194,5 @@ const styles = StyleSheet.create({
 });
 
 export const authScreenOptions = {
-  title: "Authorization",
+  title: "Authenticate",
 };

@@ -1,20 +1,46 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const SIGNUP = "SIGNUP";
-export const LOGIN = "LOGIN";
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";
+export const SET_DID_TRY_AL = "SET_DID_TRY_AL";
 
-export const authenticate = (userId, token) => {
+let timer;
+
+export const setDidTryAl = () => {
   return {
-    type: AUTHENTICATE,
-    userId,
-    token,
+    type: SET_DID_TRY_AL,
   };
 };
 
+export const authenticate = (userId, token, expiryTime) => {
+  return (dispatch) => {
+    dispatch(setLogoutTimer(expiryTime));
+    dispatch({
+      type: AUTHENTICATE,
+      userId,
+      token,
+    });
+  };
+};
+
+const clearTimeoutTimer = () => {
+  if (timer) {
+    clearTimeout(timer);
+  }
+};
+
 export const logout = () => {
+  clearTimeoutTimer();
+  AsyncStorage.removeItem("userData");
   return { type: LOGOUT };
+};
+
+const setLogoutTimer = (expirationTime) => {
+  return (dispatch) => {
+    timer = setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime);
+  };
 };
 
 export const signup = (email, password) => {
@@ -47,7 +73,13 @@ export const signup = (email, password) => {
 
     const resData = await response.json();
 
-    dispatch(authenticate(resData.localId, resData.idToken));
+    dispatch(
+      authenticate(
+        resData.localId,
+        resData.idToken,
+        parseInt(resData.expiresIn) * 1000
+      )
+    );
 
     // The API returns the epire time as a string.
     // We will therefore convert the ExpireIn string to an integer and multiply the value
@@ -91,7 +123,13 @@ export const login = (email, password) => {
 
     const resData = await response.json();
 
-    dispatch(authenticate(resData.localId, resData.idToken));
+    dispatch(
+      authenticate(
+        resData.localId,
+        resData.idToken,
+        parseInt(resData.expiresIn) * 1000
+      )
+    );
 
     // The API returns the epire time as a string.
     // We will therefore convert the ExpireIn string to an integer and multiply the value

@@ -4,11 +4,12 @@ import { StyleSheet, Text, View } from "react-native";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import ReduxThunk from "redux-thunk";
 import { Provider, useSelector } from "react-redux";
-import { NavigationContainer } from "@react-navigation/native";
-import { ShopNavigator } from "./navigation/ShopNavigation";
+
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// Navigators
+import AppNavigator from "./navigation/AppNavigator";
 
 // REDUX
 import productReducer from "./store/reducers/products";
@@ -51,9 +52,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <ShopNavigator />
-      </NavigationContainer>
+      <AppNavigator />
     </Provider>
   );
 }

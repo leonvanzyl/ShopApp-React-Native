@@ -48,16 +48,10 @@ const ProductOverviewScreen = (props) => {
 
   // Add listener for refreshing the data - ie. on navigation changes
   useEffect(() => {
-    const willFocusSub = props.navigation.addListener("focus", loadProducts);
+    const unsubscribe = props.navigation.addListener("focus", loadProducts);
 
     // Clean up the listener
-    return willFocusSub;
-    // return () => {
-    //   if (willFocusSub) {
-    //     console.log(willFocusSub);
-    //     willFocusSub.remove();
-    //   }
-    // };
+    return () => unsubscribe();
   }, [loadProducts]);
 
   // Fetch initial data

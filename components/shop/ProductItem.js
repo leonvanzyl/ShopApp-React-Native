@@ -8,7 +8,6 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from "react-native";
-import Colors from "../../constants/Colors";
 
 // Custom Components
 import Card from "../UI/Card";
