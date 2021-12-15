@@ -1,5 +1,13 @@
 import React from "react";
-import { StyleSheet, FlatList, Platform, Button, Alert } from "react-native";
+import {
+  StyleSheet,
+  FlatList,
+  Platform,
+  Button,
+  Alert,
+  View,
+  Text,
+} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 // Custom Components
@@ -35,6 +43,15 @@ const UserProductsScreen = (props) => {
       },
     ]);
   };
+
+  if (userProducts.length === 0) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>No products found, create some.</Text>
+      </View>
+    );
+  }
+
   return (
     <FlatList
       data={userProducts}

@@ -27,6 +27,7 @@ import EditProductScreen, {
   editProductScreenOptions,
 } from "../screens/user/EditProductScreen";
 import AuthScreen, { authScreenOptions } from "../screens/user/AuthScreen";
+import StartupScreen from "../screens/StartupScreen";
 
 const OrdersStack = createStackNavigator();
 const ProductStack = createStackNavigator();
@@ -171,6 +172,7 @@ const ShopStackNavigator = createStackNavigator();
 export function ShopNavigator() {
   return (
     <ShopStackNavigator.Navigator screenOptions={{ headerShown: false }}>
+      <ShopStackNavigator.Screen name="startup" component={StartupScreen} />
       <ShopStackNavigator.Screen name="auth" component={AuthNavigator} />
       <ShopStackNavigator.Screen name="shop" component={MainDrawerNavigator} />
     </ShopStackNavigator.Navigator>

@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { ShopNavigator } from "./navigation/ShopNavigation";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // REDUX
 import productReducer from "./store/reducers/products";

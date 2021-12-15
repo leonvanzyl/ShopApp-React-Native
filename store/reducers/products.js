@@ -8,8 +8,8 @@ import {
 } from "../actions/products";
 
 const initialState = {
-  availableProducts: PRODUCTS,
-  userProducts: PRODUCTS.filter((product) => product.ownerId === "u1"),
+  availableProducts: [],
+  userProducts: [],
 };
 
 export default (state = initialState, action) => {
@@ -18,9 +18,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         availableProducts: action.products,
-        userProducts: action.products.filter(
-          (product) => product.ownerId === "u1"
-        ),
+        userProducts: action.userProducts,
       };
     case DELETE_PRODUCT:
       return {
